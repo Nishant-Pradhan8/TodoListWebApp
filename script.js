@@ -41,7 +41,7 @@ function renderTodo(){
   
   allElem.classList.add("todoStates");
   todoState();
-  updateItemNumber();
+  updateItemNumber(todoList);
   sortable();
 }
 
@@ -60,6 +60,7 @@ function renderCompleted(){
     completedHTML += HTML;
   })
    todoDivElement.innerHTML =  completedHTML;
+   updateItemNumber(completedTodo);
    localStorage.setItem('CompletedtodoList',JSON.stringify(completedTodo))
 }
 
@@ -86,6 +87,10 @@ checkBoxElem.forEach((checkbox)=>{
     if(labelElem.classList.contains('crossed')){
       labelElem.classList.remove("crossed");
       todoList.push(todo);
+      if(completedTodo.includes(todo)){
+        let index = completedTodo.indexOf(todo);
+        completedTodo.splice(index,1)
+      }
       localStorage.setItem('todoList',JSON.stringify(todoList))
       updateItemNumber();
       
@@ -97,7 +102,6 @@ checkBoxElem.forEach((checkbox)=>{
       completedTodo.push(todo);
       localStorage.setItem('todoList',JSON.stringify(todoList));
       localStorage.setItem('CompletedtodoList',JSON.stringify(completedTodo));
-     
       updateItemNumber();
     } 
   })
@@ -105,9 +109,9 @@ checkBoxElem.forEach((checkbox)=>{
 };
 
 
-function updateItemNumber(){
+function updateItemNumber(arr){
   let leftItems = 0;
-  todoList.forEach(()=>{
+  arr.forEach(()=>{
     leftItems+=1;
   })
   leftElement.innerHTML = `${leftItems} items left`;
@@ -132,8 +136,11 @@ document.querySelector(".all").addEventListener("click",()=>{
   completeElem.classList.remove("todoStates");
 });
 clearCompElem.addEventListener('click',()=>{
-  completedTodo.splice(0, completedTodo.length);
-  renderCompleted();
+   completedTodo.splice(0, completedTodo.length);
+   renderCompleted();
+   completeElem.classList.add("todoStates");
+   allElem.classList.remove("todoStates");
+   activeElem.classList.remove("todoStates");
 })
 function sortable(){
 const todoListDivElem = document.querySelectorAll(".todoListDiv");

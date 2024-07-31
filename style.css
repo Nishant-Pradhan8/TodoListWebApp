@@ -151,6 +151,7 @@ input[type="checkbox"]:checked + label:before {
   text-align: center;
   margin-top: 3rem;
   font-size: 0.9rem;
+  padding-bottom: 2rem;
 }
 .mode{
   cursor: pointer;
